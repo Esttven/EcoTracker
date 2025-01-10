@@ -38,10 +38,10 @@ const sequelize = new Sequelize(db_name, db_user, db_password, {
     dialect: "postgres",
 });
 sequelize.authenticate()
-    .then(() => console.log("Database connected!"))
-    .catch(err => console.error("Connection failed:", err));
+    .then(() => console.log("Base de datos conectada"))
+    .catch(err => console.error("Conección a la base de datos fallida:", err));
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Servidor ejecutándose en: http://localhost:${port}`);
 });

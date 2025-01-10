@@ -3,7 +3,7 @@
 ## Instrucciones para correr el repositorio
 
 1. Crear una base de datos de Postgres con el nombre `ecotracker`.
-2. Renombrar el archivo `config/config_json` a `config.json` y reemplaar la configuración dentro con la información de la base:
+2. Renombrar el archivo `config/config_json` a `config.json` y reemplzar la configuración dentro con la información de la base:
 
     ```json
       "development": {
@@ -25,4 +25,12 @@
     DB_NAME = ecotracker
     ```
 
-4. Correr el comando `npm run dev` dentro de la consola de VSCode. Dentro de la consola se debe encontrar la dirección del servidor.
+4. Correr el comando `npx sequelize-cli db:migrate` dentro de la consola de VSCode para hacer las migraciones.
+
+5. Correr el comando `npm run dev` dentro de la consola de VSCode. Si la consola solo dice `Restarting 'app'` presionar `Ctrl + C` para cancelar y volver a correr `npm run dev`. Si el servidor se inició correctamente se debe mostrar lo siguiente:
+
+    ```
+    Servidor ejecutándose en: http://localhost:3000
+    Executing (default): SELECT 1+1 AS result
+    Base de datos conectada
+    ```
