@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("/dashboard/data")
         .then((response) => response.json())
         .then((data) => {
+            console.log(data)
             document.getElementById("username").textContent = data.username;
 
             // Populate appliance dropdown

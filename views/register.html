@@ -11,22 +11,24 @@
     <h1>Register for EcoTracker</h1>
   </header>
   <main>
-    <form action="/register" method="POST">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
-
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-
-      <label for="confirm_password">Confirm Password:</label>
-      <input type="password" id="confirm_password" name="confirm_password" required>
-
-      <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login here</a></p>
+    <div class="register">
+      <form action="/register" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+  
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+  
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+  
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+  
+        <button type="submit">Register</button>
+      </form>
+      <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
   </main>
 </body>
 </html>
