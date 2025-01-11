@@ -15,24 +15,22 @@ app.use(express.json());
 app.use(session({ secret: "simple-auth", resave: false, saveUninitialized: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Routes
+// Rutas
 const authRoutes = require("./routes/auth");
 const dashboardRoutes = require("./routes/dashboard");
 app.use("/", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 
-// Root URL route
+// Ruta principal
 app.get("/", (req, res) => {
     if (req.session.user) {
-        // If logged in, serve the dashboard
         res.sendFile(path.join(__dirname, "views", "dashboard.html"));
     } else {
-        // If not logged in, serve the landing page
         res.sendFile(path.join(__dirname, "views", "index.html"));
     }
 });
 
-// Database Connection
+// Base de datos
 const sequelize = new Sequelize(db_name, db_user, db_password, {
     host: "localhost",
     dialect: "postgres",
@@ -41,7 +39,7 @@ sequelize.authenticate()
     .then(() => console.log("Base de datos conectada"))
     .catch(err => console.error("Conección a la base de datos fallida:", err));
 
-// Start the server
+// Iniciar servidor
 app.listen(port, () => {
     console.log(`Servidor ejecutándose en: http://localhost:${port}`);
 });

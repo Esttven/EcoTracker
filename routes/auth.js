@@ -16,11 +16,11 @@ router.post("/login", async (req, res) => {
             req.session.userId = user.id;
             res.redirect("/dashboard");
         } else {
-            res.send("<h3>Invalid credentials! <a href='/login'>Try Again</a></h3>");
+            res.send("<h3>Credenciales inválidas <a href='/login'>Try Again</a></h3>");
         }
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).send("An error occurred during login");
+        res.status(500).send("Error de inicio de sesión");
     }
 });
 
@@ -36,15 +36,14 @@ router.post("/register", async (req, res) => {
         const { email, username, password, confirm_password } = req.body;
 
         if (password !== confirm_password) {
-            return res.send("<h3>Passwords do not match! <a href='/register'>Try Again</a></h3>");
+            return res.send("<h3>Las contraseñas no coinciden <a href='/register'>Intentar de nuevo</a></h3>");
         }
 
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
-            return res.send("<h3>Email is already registered! <a href='/register'>Try Again</a></h3>");
+            return res.send("<h3>El correo ya está registrado <a href='/register'>Intentar de nuevo</a></h3>");
         }
 
-        // Add user creation logic here
         const newUser = await User.create({
             email,
             username,
@@ -53,8 +52,8 @@ router.post("/register", async (req, res) => {
 
         res.redirect('/login');
     } catch (error) {
-        console.error('Registration error:', error);
-        res.status(500).send("An error occurred during registration");
+        console.error('Error de registro:', error);
+        res.status(500).send("Ocurrió un error durante el registro");
     }
 });
 

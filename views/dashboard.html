@@ -1,49 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - EcoTracker</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - EcoTracker</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Welcome, <span id="username"></span>!</h1>
-    <button id="logout">Logout</button>
-  </header>
-  <main>
-    <div class="container">
+    <header>
+        <h1>Bienvenido, <span id="username"></span>!</h1>
+        <button id="logout">Cerrar Sesión</button>
+    </header>
+    <main>
+        <div class="container">
+            <div class="usage-summary">
+                <h2>Resumen Mensual</h2>
+                <p>Uso Total Mensual: <span id="total-monthly-usage">0</span> kWh</p>
+            </div>
 
-      <h2>Your Electric Usage Instances</h2>
-      <table id="usage-table">
-        <thead>
-          <tr>
-            <th>Appliance</th>
-            <th>Frequency</th>
-            <th>Monthly Usage (kWh)</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Instances will be dynamically added here -->
-        </tbody>
-      </table>
-  
-      <h3>Add New Usage Instance</h3>
-      <form id="add-usage-form">
-        <label for="appliance">Appliance:</label>
-        <select id="appliance" name="appliance" required>
-          <!-- Dynamically populated from the database -->
-        </select>
-  
-        <label for="frequency">Frequency:</label>
-        <input type="number" id="frequency" name="frequency" min="1" required>
-  
-        <button type="submit">Add Instance</button>
-      </form>
-    </div>
-  </main>
+            <h2>Tus Instancias de Uso Eléctrico</h2>
+            <table id="usage-table">
+                <thead>
+                    <tr>
+                        <th>Electrodoméstico</th>
+                        <th>Frecuencia</th>
+                        <th>Uso Mensual (kWh)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
 
-  <script src="/js/scripts.js"></script>
+            <h3>Agregar Nueva Instancia de Uso</h3>
+            <form id="add-usage-form">
+                <label for="appliance">Electrodoméstico:</label>
+                <select id="appliance" name="appliance" required>
+                    <option value="">Selecciona un electrodoméstico</option>
+                </select>
+
+                <label for="frequency">Frecuencia:</label>
+                <input type="number" id="frequency" name="frequency" min="1" required>
+                <small id="frequency-help" class="form-text">Selecciona un electrodoméstico para ver el tipo de frecuencia</small>
+
+                <button type="submit">Agregar Instancia</button>
+            </form>
+        </div>
+    </main>
+    <script src="/js/scripts.js"></script>
 </body>
 </html>
