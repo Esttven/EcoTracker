@@ -135,5 +135,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# sequelize config
+# config
 config/config.json
+config/firebaseConfig.js
+config/serviceAccount.json

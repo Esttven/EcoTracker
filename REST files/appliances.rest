@@ -1,0 +1,36 @@
+@token = eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkMjUwZDIyYTkzODVmYzQ4NDJhYTU2YWJhZjUzZmU5NDcxNmVjNTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZWNvLXRyYWNrZXItMzI3MTciLCJhdWQiOiJlY28tdHJhY2tlci0zMjcxNyIsImF1dGhfdGltZSI6MTczODc5NDYxMiwidXNlcl9pZCI6IjhpaDRaYnVCdkpYWjBKS1FQcG5ZQ29HOHdlSTMiLCJzdWIiOiI4aWg0WmJ1QnZKWFowSktRUHBuWUNvRzh3ZUkzIiwiaWF0IjoxNzM4Nzk0NjEyLCJleHAiOjE3Mzg3OTgyMTIsImVtYWlsIjoiZWRhcnRlYWdhQHB1Y2UuZWR1LmVjIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImVkYXJ0ZWFnYUBwdWNlLmVkdS5lYyJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.KjL0qIowNt6bUn5JaF1JEgTpUrjxwQ2-eS8RefJ6z2tCldl3K8NG9fghBPz187cccS7OLZxyYCTWUUgwJXVL0H9fenaTDeWDSiRh2PuCl4jAHAneJF34ifHO11W7PYvIhKht9nCSbHxlMb8el5jaSmuRhLYDzOgtngBbNCTR5XUZnF-1svIu4VdYAoOUwtfs27o8rMfB_MQJ0_ukJPQyZo1Ez_N9PDUqMayCC_j_mjv0sp4fYUzZmg5wEwPFNwO82gaGB2PJ_3qT-y50dlidn0Zi4gXLtW7Yzfa5-zzTL3Xj4tZbtKEWfM0IYhnQfCQHDIZcR9DSAuruUVKT5RPd1g
+
+
+### Create a new appliance
+POST http://localhost:3000/appliances
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Refrigerator",
+  "type": "hours_per_day",
+  "kwh": 2.184
+}
+
+### Get all appliances
+GET http://localhost:3000/appliances
+Authorization: Bearer {{token}}
+
+### Get an appliance by ID
+GET http://localhost:3000/appliances/1
+Authorization: Bearer {{token}}
+
+### Update an appliance
+PUT http://localhost:3000/appliances/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Updated Refrigerator",
+  "type": "hours_per_day",
+  "kwh": 2.5
+}
+
+### Delete an appliance
+DELETE http://localhost:3000/appliances/1
+Authorization: Bearer {{token}}

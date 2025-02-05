@@ -1,59 +1,76 @@
 const express = require('express');
 const router = express.Router();
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup } = require('firebase/auth');
+const { initializeApp } = require('firebase/app');
 const { User } = require('../models');
+const { firebaseConfig, googleProvider } = require('../config/firebaseConfig');
 
-// Login Page
-router.get("/login", (req, res) => {
-    res.sendFile("views/login.html", { root: __dirname + "/../" });
-});
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-// Login Logic
-router.post("/login", async (req, res) => {
+// Register a new user
+router.post('/register', async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ where: { username, password } });
-        if (user) {
-            req.session.userId = user.id;
-            res.redirect("/dashboard");
-        } else {
-            res.send("<h3>Credenciales inválidas <a href='/login'>Try Again</a></h3>");
-        }
+        const { email, password, username } = req.body;
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Add user to the database
+        const newUser = await User.create({ email, username, adminId: 0 });
+
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).send("Error de inicio de sesión");
+        res.status(500).json({ error: 'Error registering user', details: error.message });
     }
 });
 
+// Login user
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const token = await userCredential.user.getIdToken();
 
-// Register Page
-router.get("/register", (req, res) => {
-    res.sendFile("views/register.html", { root: __dirname + "/../" });
+        // Check if user exists in the database
+        let user = await User.findOne({ where: { email } });
+        if (!user) {
+            // Add user to the database if not exists
+            user = await User.create({ email, username: email, adminId: 0 });
+        }
+
+        res.status(200).json({ token, user });
+    } catch (error) {
+        res.status(500).json({ error: 'Error logging in user', details: error.message });
+    }
 });
 
-// Register Logic
-router.post("/register", async (req, res) => {
+// Google login
+router.post('/google-login', async (req, res) => {
     try {
-        const { email, username, password, confirm_password } = req.body;
+        const result = await signInWithPopup(auth, googleProvider);
+        const token = await result.user.getIdToken();
+        const email = result.user.email;
 
-        if (password !== confirm_password) {
-            return res.send("<h3>Las contraseñas no coinciden <a href='/register'>Intentar de nuevo</a></h3>");
+        // Check if user exists in the database
+        let user = await User.findOne({ where: { email } });
+        if (!user) {
+            // Add user to the database if not exists
+            user = await User.create({ email, username: email, adminId: 0 });
         }
 
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.send("<h3>El correo ya está registrado <a href='/register'>Intentar de nuevo</a></h3>");
-        }
-
-        const newUser = await User.create({
-            email,
-            username,
-            password
-        });
-
-        res.redirect('/login');
+        res.status(200).json({ token, user });
     } catch (error) {
-        console.error('Error de registro:', error);
-        res.status(500).send("Ocurrió un error durante el registro");
+        res.status(500).json({ error: 'Error logging in with Google', details: error.message });
+    }
+});
+
+// Logout user
+router.post('/logout', async (req, res) => {
+    try {
+        await signOut(auth);
+        res.status(200).json({ message: 'User logged out successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error logging out user', details: error.message });
     }
 });
 

@@ -17,18 +17,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Rutas
 const authRoutes = require("./routes/auth");
-const dashboardRoutes = require("./routes/dashboard");
-app.use("/", authRoutes);
-app.use("/dashboard", dashboardRoutes);
+const userRoutes = require("./routes/user");
+const applianceRoutes = require("./routes/appliance");
+const electricUsageRoutes = require("./routes/electricUsage");
 
-// Ruta principal
-app.get("/", (req, res) => {
-    if (req.session.user) {
-        res.sendFile(path.join(__dirname, "views", "dashboard.html"));
-    } else {
-        res.sendFile(path.join(__dirname, "views", "index.html"));
-    }
-});
+app.use("/", authRoutes);
+app.use("/users", userRoutes);
+app.use("/appliances", applianceRoutes);
+app.use("/electric-usage", electricUsageRoutes);
 
 // Base de datos
 const sequelize = new Sequelize(db_name, db_user, db_password, {
