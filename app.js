@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const { Sequelize } = require("sequelize");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,6 +11,7 @@ const db_user = process.env.DB_USER;
 const db_password = process.env.DB_PASSWORD;
 
 // Middleware
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({ secret: "simple-auth", resave: false, saveUninitialized: true }));
