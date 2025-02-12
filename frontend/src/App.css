@@ -1,49 +1,8 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 
 :root {
-  --primary-green: #44c048;
-  --dark-green: #40ac45;
+  --primary-green: #296b2b;
+  --dark-green: #237427;
   --light-green: #A5D6A7;
   --background-dark: #3b752f;
   --text-light: #ffffff;
@@ -148,7 +107,7 @@ body {
 }
 
 h2 {
-  color: #1b5e20;
+  color: #ffffff;
   margin-bottom: 20px;
 }
 
@@ -182,7 +141,7 @@ p {
 }
 
 a {
-  color: #1b5e20;
+  color: #164e1a;
   font-weight: bold;
   text-decoration: none;
 }
@@ -211,7 +170,7 @@ a:hover {
   padding: 20px;
   max-width: 300px;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 10px;
   text-align: left;
   transition: transform 0.3s ease;
 }
@@ -302,9 +261,10 @@ a:hover {
 }
 
 .animated-bg {
-  background: linear-gradient(-45deg, #4CAF50, #2E7D32, #81C784, #388E3C);
+  background: #84b97d;
   background-size: 400% 400%;
   animation: gradientAnimation 6s ease infinite;
+  opacity: 67%;
 }
 
 @keyframes gradientAnimation {
@@ -312,4 +272,32 @@ a:hover {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+body {
+  cursor: url('https://cdn-icons-png.flaticon.com/32/616/616490.png'), auto;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(-45deg, #4CAF50, #2E7D32, #81C784, #388E3C);
+  background-size: 400% 400%;
+  animation: gradientAnimation 6s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: #2E7D32;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
 
