@@ -4,7 +4,7 @@
 
 1. Correr el comando `npm install` dentro de la consola de VSCode.
 2. Crear una base de datos de Postgres con el nombre `ecotracker`.
-3. Renombrar el archivo `config/config_json` a `config.json` y reemplzar la configuración dentro con la información de la base:
+3. Renombrar el archivo `config/config_json` a `config.json` y reemplazar la configuración dentro con la información de la base:
 
     ```json
       "development": {
@@ -35,3 +35,4 @@
     Executing (default): SELECT 1+1 AS result
     Base de datos conectada
     ```
+
