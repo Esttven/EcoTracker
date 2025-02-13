@@ -22,11 +22,13 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const applianceRoutes = require("./routes/appliance");
 const electricUsageRoutes = require("./routes/electricUsage");
+const adviceRoutes = require("./routes/advice");
 
 app.use("/", authRoutes);
 app.use("/users", userRoutes);
 app.use("/appliances", applianceRoutes);
-app.use("/electric-usage", electricUsageRoutes);
+app.use("/electric-usages", electricUsageRoutes);
+app.use("/advice", adviceRoutes);
 
 // Base de datos
 const sequelize = new Sequelize(db_name, db_user, db_password, {

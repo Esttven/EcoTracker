@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ElectricUsage, Appliance } = require('../models');
+const { ElectricUsage, Appliance, User } = require('../models');
 const { authenticateUser } = require('../middleware/firebaseAuth');
 
 // Create a new electric usage
@@ -27,6 +27,7 @@ router.post('/', authenticateUser, async (req, res) => {
             monthlyUsage
         });
     } catch (error) {
+        console.error('Error creating electric usage:', error);
         res.status(500).json({ error: 'Error creating electric usage' });
     }
 });
@@ -112,7 +113,22 @@ router.get('/user/:userId', authenticateUser, async (req, res) => {
             where: { userId: req.params.userId },
             include: [Appliance]
         });
-        res.status(200).json(usages);
+
+        const usagesWithMonthlyUsage = usages.map(usage => {
+            const monthlyUsage = usage.Appliance.type === "hours_per_day"
+                ? usage.frequency * usage.Appliance.kwh * 30
+                : usage.frequency * usage.Appliance.kwh * 4;
+
+            return {
+                id: usage.id,
+                applianceName: usage.Appliance.name,
+                frequency: usage.frequency,
+                type: usage.Appliance.type,
+                monthlyUsage
+            };
+        });
+
+        res.status(200).json(usagesWithMonthlyUsage);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching electric usages by user ID' });
     }

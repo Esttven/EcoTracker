@@ -16,7 +16,12 @@ router.post('/register', async (req, res) => {
         const user = userCredential.user;
 
         // Add user to the database
-        const newUser = await User.create({ email, username, adminId: 0 });
+        const newUser = await User.create({
+            id: user.uid, // Store Firebase user ID in the id field
+            email,
+            username,
+            adminId: 0
+        });
 
         res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
@@ -30,12 +35,18 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const token = await userCredential.user.getIdToken();
+        const userId = userCredential.user.uid;
 
         // Check if user exists in the database
-        let user = await User.findOne({ where: { email } });
+        let user = await User.findOne({ where: { id: userId } });
         if (!user) {
             // Add user to the database if not exists
-            user = await User.create({ email, username: email, adminId: 0 });
+            user = await User.create({
+                id: userId, // Store Firebase user ID in the id field
+                email,
+                username: email,
+                adminId: 0
+            });
         }
 
         res.status(200).json({ token, user });
@@ -50,12 +61,18 @@ router.post('/google-login', async (req, res) => {
         const result = await signInWithPopup(auth, googleProvider);
         const token = await result.user.getIdToken();
         const email = result.user.email;
+        const userId = result.user.uid;
 
         // Check if user exists in the database
-        let user = await User.findOne({ where: { email } });
+        let user = await User.findOne({ where: { id: userId } });
         if (!user) {
             // Add user to the database if not exists
-            user = await User.create({ email, username: email, adminId: 0 });
+            user = await User.create({
+                id: userId, // Store Firebase user ID in the id field
+                email,
+                username: email,
+                adminId: 0
+            });
         }
 
         res.status(200).json({ token, user });
