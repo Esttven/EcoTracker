@@ -1,0 +1,124 @@
+/* 📌 Estilos generales del Dashboard */
+.dashboard-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    background-color: #E8F5E9; /* Fondo verde claro */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 📌 Título principal */
+  .dashboard-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #1B5E20; /* Verde oscuro */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  /* 📌 Sección de métricas */
+  .dashboard-metrics {
+    text-align: center;
+    margin-top: 20px;
+    background-color: #DFF0D8; /* Verde pastel */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 📌 Mejor visibilidad del texto */
+  .dashboard-metrics p {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #1B5E20; /* Verde oscuro */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+  }
+  
+  /* 📌 Resaltando números de consumo */
+  .dashboard-metrics strong {
+    color: #2E7D32; /* Verde más intenso */
+    font-size: 1.5em;
+  }
+  
+  /* 📌 Estilos para el menú desplegable */
+  .appliance-dropdown {
+    margin-top: 20px;
+  }
+  
+  .appliance-dropdown h2 {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #004d40; /* Verde más oscuro */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* 📌 Estilizando el select */
+  .styled-dropdown {
+    width: 80%;
+    padding: 12px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 2px solid #1B5E20;
+    background-color: #C8E6C9; /* Verde claro */
+    color: #1B5E20;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+  
+  /* 📌 Cambio de color al seleccionar */
+  .styled-dropdown:hover,
+  .styled-dropdown:focus {
+    background-color: #A5D6A7;
+    outline: none;
+  }
+  
+  /* 📌 Sección de entrada de datos */
+  .input-section {
+    margin-top: 20px;
+  }
+  
+  .input-section h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #1B5E20;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+  }
+  
+  /* 📌 Estilizando el input */
+  .input-section input {
+    width: 80%;
+    padding: 12px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 2px solid #1B5E20;
+    background-color: #C8E6C9; /* Verde claro */
+    color: #1B5E20;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 📌 Botón de calcular */
+  .calculate-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+    background-color: #388E3C;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .calculate-btn:hover {
+    background-color: #2E7D32;
+  }
+  

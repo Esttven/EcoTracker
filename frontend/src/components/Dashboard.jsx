@@ -1,77 +1,146 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
+import './dashboard.css';
 
 const Dashboard = () => {
-  const [usages, setUsages] = useState([]);
+  const [appliances, setAppliances] = useState([]);
+  const [selectedAppliance, setSelectedAppliance] = useState(null);
+  const [frequency, setFrequency] = useState('');
   const [totalUsage, setTotalUsage] = useState(0);
   const [carbonFootprint, setCarbonFootprint] = useState(0);
+  const [consumptionRecords, setConsumptionRecords] = useState([]);
   const { token } = useAuth();
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    if (!token) return;
+    console.log("Obteniendo electrodomésticos con token:", token);
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/electric-usage', {
+        const response = await axios.get('http://localhost:3000/appliances', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUsages(response.data);
-        calculateTotalUsage(response.data);
+        setAppliances(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error en fetchData:", error.response?.data || error.message);
       }
     };
-
     fetchData();
   }, [token]);
 
-  const calculateTotalUsage = (usages) => {
-    const total = usages.reduce((sum, usage) => sum + usage.monthlyUsage, 0);
-    setTotalUsage(total);
-    setCarbonFootprint(total * 0.92); // Example conversion factor
+  useEffect(() => {
+    if (!token) return;
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/auth/user', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserId(response.data.id);
+      } catch (error) {
+        console.error("Error obteniendo userId:", error.response?.data || error.message);
+      }
+    };
+    fetchUserData();
+  }, [token]);
+
+  useEffect(() => {
+    if (!token || !userId) return;
+    console.log("Usuario autenticado con ID:", userId);
+    const fetchConsumptionRecords = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/electric-usage/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setConsumptionRecords(response.data.records || []);
+        setTotalUsage(response.data.totalUsage || 0);
+        setCarbonFootprint(response.data.totalUsage * 0.92 || 0);
+      } catch (error) {
+        console.error("Error al obtener historial de consumo:", error.response?.data || error.message);
+      }
+    };
+    fetchConsumptionRecords();
+  }, [token, userId]);
+
+  const handleSelectAppliance = (event) => {
+    const selected = appliances.find(appliance => appliance.id === parseInt(event.target.value));
+    setSelectedAppliance(selected);
+    setFrequency('');
   };
 
-  const handleDelete = async (id) => {
+  const handleCalculate = async () => {
+    if (!userId) {
+      alert("Error: No se pudo obtener el ID del usuario. Intenta iniciar sesión nuevamente.");
+      return;
+    }
+    if (!selectedAppliance) {
+      alert("Por favor, selecciona un electrodoméstico.");
+      return;
+    }
+    if (!frequency || parseInt(frequency, 10) <= 0) {
+      alert("Ingresa una frecuencia válida.");
+      return;
+    }
+
+    const newRecord = {
+      applianceId: selectedAppliance.id,
+      frequency: parseInt(frequency, 10),
+      userId: userId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
     try {
-      await axios.delete(`http://localhost:3000/electric-usage/${id}`, {
+      console.log("Enviando datos al backend:", newRecord);
+      const response = await axios.post('http://localhost:3000/electric-usage', newRecord, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUsages(usages.filter((usage) => usage.id !== id));
-      calculateTotalUsage(usages.filter((usage) => usage.id !== id));
+      if (response.status === 201) {
+        setConsumptionRecords([...consumptionRecords, response.data]);
+        setTotalUsage(response.data.totalUsage || 0);
+        setCarbonFootprint(response.data.totalUsage * 0.92 || 0);
+      }
     } catch (error) {
-      console.error('Error deleting usage:', error);
+      alert("No se pudo guardar el registro en la base de datos.");
     }
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <h2>Consumo mensual total: {totalUsage.toFixed(2)} kWh</h2>
-      <h2>Huella de carbono: {carbonFootprint.toFixed(2)} kg CO2</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Electrodoméstico</th>
-            <th>Frecuencia</th>
-            <th>Consumo mensual (kWh)</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usages.map((usage) => (
-            <tr key={usage.id}>
-              <td>{usage.applianceName}</td>
-              <td>{usage.frequency}</td>
-              <td>{usage.monthlyUsage.toFixed(2)}</td>
-              <td>
-                <button onClick={() => handleDelete(usage.id)}>Eliminar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="dashboard-container">
+      <h1 className="dashboard-title">Dashboard de Consumo Energético</h1>
+      <div className="dashboard-metrics">
+        <p><strong>Consumo mensual total:</strong> {totalUsage.toFixed(2)} kWh</p>
+        <p><strong>Huella de carbono:</strong> {carbonFootprint.toFixed(2)} kg CO2</p>
+      </div>
+
+      <div className="appliance-dropdown">
+        <h2>Selecciona un electrodoméstico</h2>
+        <select className="styled-dropdown" onChange={handleSelectAppliance} value={selectedAppliance?.id || ''}>
+          <option value="" disabled>Elige un electrodoméstico</option>
+          {appliances.length > 0 ? (
+            appliances.map((appliance) => (
+              <option key={appliance.id} value={appliance.id}>{appliance.name}</option>
+            ))
+          ) : (
+            <option disabled>No hay electrodomésticos disponibles</option>
+          )}
+        </select>
+      </div>
+
+      {selectedAppliance && (
+        <div className="input-section">
+          <h3>Frecuencia de uso ({selectedAppliance.type === "hours_per_day" ? "Horas por día" : "Veces por semana"})</h3>
+          <input 
+            type="number" 
+            value={frequency} 
+            onChange={(e) => setFrequency(e.target.value)} 
+            placeholder="Ingresa la cantidad"
+          />
+          <button className="calculate-btn" onClick={handleCalculate}>Calcular Consumo</button>
+        </div>
+      )}
     </div>
   );
 };
-
 
 export default Dashboard;
