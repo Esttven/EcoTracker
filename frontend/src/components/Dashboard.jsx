@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [carbonFootprint, setCarbonFootprint] = useState(0);
   const [consumptionRecords, setConsumptionRecords] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [advice, setAdvice] = useState(""); // Nuevo estado para almacenar el consejo
   const { token, userId, isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -47,6 +48,15 @@ const Dashboard = () => {
         );
         setTotalUsage(totalUsage);
         setCarbonFootprint(totalUsage * 0.92);
+
+        // Fetch advice based on carbon footprint
+        const adviceResponse = await axios.get(
+          `http://localhost:3000/advice/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setAdvice(adviceResponse.data.advice);
       } catch (error) {
         console.error("Error al obtener historial de consumo:", error.response?.data || error.message);
       }
@@ -102,6 +112,15 @@ const Dashboard = () => {
         );
         setTotalUsage(totalUsage);
         setCarbonFootprint(totalUsage * 0.92);
+
+        // Fetch new advice based on updated carbon footprint
+        const adviceResponse = await axios.get(
+          `http://localhost:3000/advice/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setAdvice(adviceResponse.data.advice);
       }
     } catch (error) {
       alert("No se pudo guardar el registro en la base de datos.");
@@ -133,6 +152,15 @@ const Dashboard = () => {
         setTotalUsage(totalUsage);
         setCarbonFootprint(totalUsage * 0.92);
         setEditingId(null);
+
+        // Fetch new advice based on updated carbon footprint
+        const adviceResponse = await axios.get(
+          `http://localhost:3000/advice/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setAdvice(adviceResponse.data.advice);
       }
     } catch (error) {
       alert("No se pudo actualizar el registro.");
@@ -148,6 +176,15 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setConsumptionRecords(consumptionRecords.filter((record) => record.id !== id));
+
+      // Fetch new advice based on updated carbon footprint
+      const adviceResponse = await axios.get(
+        `http://localhost:3000/advice/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setAdvice(adviceResponse.data.advice);
     } catch (error) {
       alert("No se pudo eliminar el registro.");
     }
@@ -240,6 +277,12 @@ const Dashboard = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Sección de consejos */}
+      <div className="advice-section">
+        <h2>Consejo para reducir tu huella de carbono</h2>
+        <p>{advice}</p>
       </div>
     </div>
   );

@@ -210,3 +210,27 @@
 .delete-btn:hover {
   background-color: #B71C1C;
 }
+
+/* 📌 Sección de consejos */
+.advice-section {
+  margin-top: 30px;
+  background-color: #DFF0D8; /* Verde pastel */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.advice-section h2 {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #1B5E20;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  margin-bottom: 15px;
+}
+
+.advice-section p {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #1B5E20;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
