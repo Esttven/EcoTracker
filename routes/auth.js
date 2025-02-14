@@ -1,9 +1,11 @@
 const express = require('express');
+const admin = require('firebase-admin');
 const router = express.Router();
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup } = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
 const { User } = require('../models');
 const { firebaseConfig, googleProvider } = require('../config/firebaseConfig');
+const { authenticateUser } = require('../middleware/firebaseAuth');
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -56,28 +58,40 @@ router.post('/login', async (req, res) => {
 });
 
 // Google login
-router.post('/google-login', async (req, res) => {
+router.post('/google-auth', async (req, res) => {
     try {
-        const result = await signInWithPopup(auth, googleProvider);
-        const token = await result.user.getIdToken();
-        const email = result.user.email;
-        const userId = result.user.uid;
+        const { token, email, userId } = req.body;
 
-        // Check if user exists in the database
+        console.log('Google auth request:', { token: token.substring(0, 20) + '...', email, userId });
+
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        
+        console.log('Decoded token:', { uid: decodedToken.uid, userId });
+        
+        if (decodedToken.uid !== userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Check if user exists in database
         let user = await User.findOne({ where: { id: userId } });
+        
+        // Create user if doesn't exist
         if (!user) {
-            // Add user to the database if not exists
             user = await User.create({
-                id: userId, // Store Firebase user ID in the id field
+                id: userId,
                 email,
-                username: email,
+                username: email.split('@')[0], // Create username from email
                 adminId: 0
             });
         }
 
-        res.status(200).json({ token, user });
+        res.status(200).json({ user, token });
     } catch (error) {
-        res.status(500).json({ error: 'Error logging in with Google', details: error.message });
+        console.error('Error in Google authentication:', error);
+        res.status(500).json({ 
+            error: 'Authentication failed', 
+            details: error.message 
+        });
     }
 });
 
@@ -88,6 +102,19 @@ router.post('/logout', async (req, res) => {
         res.status(200).json({ message: 'User logged out successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Error logging out user', details: error.message });
+    }
+});
+
+// Verify token
+router.get('/verify-token', authenticateUser, async (req, res) => {
+    try {
+        res.status(200).json({
+            valid: true,
+            userId: req.user.uid
+        });
+    } catch (error) {
+        console.error('Token verification error:', error);
+        res.status(401).json({ error: 'Invalid token' });
     }
 });
 
