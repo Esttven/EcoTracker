@@ -14,7 +14,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!token) return;
-    console.log("Obteniendo electrodomésticos con token:", token);
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:3000/appliances", {
@@ -22,10 +21,7 @@ const Dashboard = () => {
         });
         setAppliances(response.data);
       } catch (error) {
-        console.error(
-          "Error en fetchData:",
-          error.response?.data || error.message
-        );
+        console.error("Error en fetchData:", error.response?.data || error.message);
       }
     };
     fetchData();
@@ -33,7 +29,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!token || !userId) return;
-    console.log("Usuario autenticado con ID:", userId);
     const fetchConsumptionRecords = async () => {
       try {
         const response = await axios.get(
@@ -52,10 +47,7 @@ const Dashboard = () => {
         setTotalUsage(totalUsage);
         setCarbonFootprint(totalUsage * 0.92);
       } catch (error) {
-        console.error(
-          "Error al obtener historial de consumo:",
-          error.response?.data || error.message
-        );
+        console.error("Error al obtener historial de consumo:", error.response?.data || error.message);
       }
     };
     fetchConsumptionRecords();
@@ -71,9 +63,7 @@ const Dashboard = () => {
 
   const handleCalculate = async () => {
     if (!userId) {
-      alert(
-        "Error: No se pudo obtener el ID del usuario. Intenta iniciar sesión nuevamente."
-      );
+      alert("Error: No se pudo obtener el ID del usuario. Intenta iniciar sesión nuevamente.");
       return;
     }
     if (!selectedAppliance) {
@@ -94,7 +84,6 @@ const Dashboard = () => {
     };
 
     try {
-      console.log("Enviando datos al backend:", newRecord);
       const response = await axios.post(
         "http://localhost:3000/electric-usages",
         newRecord,
@@ -118,6 +107,24 @@ const Dashboard = () => {
     }
   };
 
+  const handleEdit = (id) => {
+    alert(`Editar registro con ID: ${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("¿Estás seguro de eliminar este registro?");
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:3000/electric-usages/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setConsumptionRecords(consumptionRecords.filter((record) => record.id !== id));
+    } catch (error) {
+      alert("No se pudo eliminar el registro.");
+    }
+  };
+
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Dashboard de Consumo Energético</h1>
@@ -126,8 +133,7 @@ const Dashboard = () => {
           <strong>Consumo mensual total:</strong> {totalUsage.toFixed(2)} kWh
         </p>
         <p>
-          <strong>Huella de carbono:</strong> {carbonFootprint.toFixed(2)} kg
-          CO2
+          <strong>Huella de carbono:</strong> {carbonFootprint.toFixed(2)} kg CO2
         </p>
       </div>
 
@@ -156,11 +162,7 @@ const Dashboard = () => {
       {selectedAppliance && (
         <div className="input-section">
           <h3>
-            Frecuencia de uso (
-            {selectedAppliance.type === "hours_per_day"
-              ? "Horas por día"
-              : "Veces por semana"}
-            )
+            Frecuencia de uso ({selectedAppliance.type === "hours_per_day" ? "Horas por día" : "Veces por semana"})
           </h3>
           <input
             type="number"
@@ -173,6 +175,40 @@ const Dashboard = () => {
           </button>
         </div>
       )}
+
+      {/* Tabla de registros de consumo eléctrico */}
+      <div className="consumption-table">
+        <h2>Historial de Consumo</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Electrodoméstico</th>
+              <th>Consumo Mensual (kWh)</th>
+              <th>Huella de Carbono (kg CO2)</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {consumptionRecords.length > 0 ? (
+              consumptionRecords.map((record) => (
+                <tr key={record.id}>
+                  <td>{record.applianceName}</td>
+                  <td>{record.monthlyUsage.toFixed(2)}</td>
+                  <td>{(record.monthlyUsage * 0.92).toFixed(2)}</td>
+                  <td>
+                    <button className="edit-btn" onClick={() => handleEdit(record.id)}>Editar</button>
+                    <button className="delete-btn" onClick={() => handleDelete(record.id)}>Eliminar</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4">No hay registros de consumo</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
