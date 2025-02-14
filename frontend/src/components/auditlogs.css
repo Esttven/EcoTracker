@@ -1,0 +1,54 @@
+.auditlogs-container {
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: #E8F5E9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 60px;
+}
+
+.auditlogs-container h1 {
+    color: black;
+}
+
+.auditlogs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* 📌 Encabezados */
+.auditlogs-table th {
+    background-color: #388E3C;
+    color: white;
+    font-size: 1.4em;
+    padding: 12px;
+    text-align: center;
+}
+
+/* 📌 Filas */
+.auditlogs-table td {
+    font-size: 1.2em;
+    padding: 10px;
+    color: #1B5E20;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 📌 Alternar colores en filas */
+.auditlogs-table tr:nth-child(even) {
+    background-color: #E8F5E9;
+}
+
+.auditlogs-table tr:hover {
+    background-color: #C8E6C9;
+}
+
+.auditlogs-table td pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}

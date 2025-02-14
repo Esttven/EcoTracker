@@ -105,12 +105,17 @@ router.post('/logout', async (req, res) => {
     }
 });
 
-// Verify token
 router.get('/verify-token', authenticateUser, async (req, res) => {
     try {
+        // Get user data from database to include adminId
+        const user = await User.findOne({ 
+            where: { id: req.user.uid }
+        });
+
         res.status(200).json({
             valid: true,
-            userId: req.user.uid
+            userId: req.user.uid,
+            adminId: user ? user.adminId : 0
         });
     } catch (error) {
         console.error('Token verification error:', error);

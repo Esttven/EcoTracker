@@ -7,14 +7,19 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminId, setAdminId] = useState(
+    parseInt(localStorage.getItem("adminId")) || 0
+  );
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     const verifyToken = async () => {
       const storedToken = localStorage.getItem("token");
       if (!storedToken) {
-        setIsAuthenticated(false);
+        handleLogout();
         return;
       }
 
@@ -23,9 +28,24 @@ export const AuthProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
 
-        if (response.status === 200) {
+        if (response.status === 200 && response.data) {
           setToken(storedToken);
           setUserId(response.data.userId);
+
+          // Get user details to verify admin status
+          const userResponse = await axios.get(
+            `http://localhost:3000/users/${response.data.userId}`,
+            {
+              headers: { Authorization: `Bearer ${storedToken}` },
+            }
+          );
+
+          if (userResponse.data) {
+            const adminStatus = userResponse.data.adminId;
+            setAdminId(adminStatus);
+            localStorage.setItem("adminId", adminStatus.toString());
+          }
+
           setIsAuthenticated(true);
         } else {
           handleLogout();
@@ -39,19 +59,23 @@ export const AuthProvider = ({ children }) => {
     verifyToken();
   }, []);
 
-  const login = (newToken, newUserId) => {
+  const login = (newToken, newUserId, newAdminId) => {
     localStorage.setItem("token", newToken);
     localStorage.setItem("userId", newUserId);
+    localStorage.setItem("adminId", newAdminId.toString());
     setToken(newToken);
     setUserId(newUserId);
+    setAdminId(parseInt(newAdminId));
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("adminId");
     setToken(null);
     setUserId(null);
+    setAdminId(0);
     setIsAuthenticated(false);
   };
 
@@ -77,6 +101,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     token,
     userId,
+    adminId,
     isAuthenticated,
     login,
     logout,
