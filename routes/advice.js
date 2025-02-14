@@ -18,7 +18,7 @@ router.get('/:userId', authenticateUser, async (req, res) => {
         }
 
         const usageJson = JSON.stringify(usages);
-        const prompt = `Este es mi consumo eléctrico: ${usageJson}. Basándote en cualquiera de los 3 electrodomésticos con mayor frecuencia de uso, dame un consejo breve en español sobre cómo reducir el consumo eléctrico. Dame solo el consejo, evita palabras innecesarias.`;
+        const prompt = `Este es mi consumo eléctrico: ${usageJson}. Basándote en cualquiera de los 3 electrodomésticos con mayor frecuencia de uso, dame un consejo breve en español sobre cómo reducir el consumo eléctrico. Dame solo el consejo, evita palabras innecesarias e intenta dar un consejo específico aplicable.`;
 
         const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
         const result = await model.generateContent(prompt);
