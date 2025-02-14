@@ -9,8 +9,8 @@ import { AuthProvider } from "./hooks/useAuth.jsx";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <div className="app-container">
           <Navbar />
           <main className="main-content">
@@ -22,8 +22,8 @@ function App() {
             </Routes>
           </main>
         </div>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

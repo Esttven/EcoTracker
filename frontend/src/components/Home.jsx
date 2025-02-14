@@ -1,8 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import "../App.css";
 
 const Home = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <div className="home-container animated-bg">
       <div className="title-card">
@@ -34,9 +46,9 @@ const Home = () => {
         </div>
       </div>
 
-      <Link to="/register">
-        <button className="btn-primary fade-in">¡Comenzar ahora!</button>
-      </Link>
+      <button className="btn-primary fade-in" onClick={handleButtonClick}>
+        ¡Comenzar ahora!
+      </button>
     </div>
   );
 };

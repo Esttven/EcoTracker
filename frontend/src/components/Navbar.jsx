@@ -6,6 +6,8 @@ import "./navbar.css";
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
 
+  console.log("Auth state:", { isAuthenticated });
+
   return (
     <nav className="navbar">
       <div className="navbar-content">

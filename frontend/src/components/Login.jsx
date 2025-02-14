@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { auth, googleProvider } from "../config/firebaseConfigFront";
+import { signInWithPopup } from "firebase/auth";
 import "./auth.css";
 
 const Login = () => {
@@ -24,6 +26,40 @@ const Login = () => {
       alert("Error al iniciar sesión");
     }
   };
+
+const handleGoogleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const token = await result.user.getIdToken();
+
+    console.log("Google sign in successful:", {
+      email: result.user.email,
+      uid: result.user.uid,
+    });
+
+    const response = await axios.post("http://localhost:3000/google-auth", {
+      token,
+      email: result.user.email,
+      userId: result.user.uid,
+    });
+
+    if (response.data.user && response.data.token) {
+      login(response.data.token, response.data.user.id);
+      navigate("/dashboard");
+    } else {
+      throw new Error("Invalid response from server");
+    }
+  } catch (error) {
+    console.error(
+      "Error registering with Google:",
+      error.response?.data || error
+    );
+    alert(
+      "Error al registrarse con Google: " +
+        (error.response?.data?.details || error.message)
+    );
+  }
+};
 
   return (
     <div className="auth-container">
@@ -52,6 +88,16 @@ const Login = () => {
             Iniciar sesión
           </button>
         </form>
+        <div className="auth-divider">
+          <span>O</span>
+        </div>
+        <button onClick={handleGoogleLogin} className="google-btn">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png"
+            alt="Google logo"
+          />
+          Iniciar sesión con Google
+        </button>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    width: 500px;   
+    width: 500px;
     padding: 20px;
     background: linear-gradient(-45deg, #4CAF50, #2E7D32, #81C784, #388E3C);
     background-size: 400% 400%;
@@ -57,7 +57,8 @@
     box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
 }
 
-.auth-box button {
+/* Primary button styles */
+.auth-box .btn-primary {
     background-color: #4CAF50;
     color: white;
     padding: 12px;
@@ -68,15 +69,16 @@
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 1rem;
+    width: 100%;
 }
 
-.auth-box button:hover {
+.auth-box .btn-primary:hover {
     background-color: #45a049;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.auth-box button:active {
+.auth-box .btn-primary:active {
     transform: translateY(0);
 }
 
@@ -104,4 +106,65 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.auth-divider {
+    margin: 20px 0;
+    text-align: center;
+    position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.auth-divider::before {
+    left: 0;
+}
+
+.auth-divider::after {
+    right: 0;
+}
+
+.auth-divider span {
+    background-color: white;
+    padding: 0 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Google button styles */
+.auth-box .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white !important;
+    color: #444;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.auth-box .google-btn:hover {
+    background-color: #f1f1f1 !important;
+    transform: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.auth-box .google-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
 }
