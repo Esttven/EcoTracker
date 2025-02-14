@@ -6,6 +6,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import AuditLogs from "./components/AuditLogs";
+import ManageUsers from "./components/ManageUsers";
+import ManageAppliances from "./components/ManageAppliances";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/auditlogs" element={<AuditLogs />} />
+              <Route path="/manage-users" element={<ManageUsers />} />
+              <Route path="/manage-appliances" element={<ManageAppliances />} />
             </Routes>
           </main>
         </div>

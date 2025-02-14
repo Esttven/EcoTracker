@@ -24,6 +24,8 @@ const Navbar = () => {
                   <button className="dropbtn">Admin</button>
                   <div className="dropdown-content">
                     <Link to="/auditlogs">Auditoría</Link>
+                    <Link to="/manage-users">Usuarios</Link>
+                    <Link to="/manage-appliances">Electrodomésticos</Link>
                   </div>
                 </div>
               )}

@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
 
         // Add user to the database
         const newUser = await User.create({
-            id: user.uid, // Store Firebase user ID in the id field
+            id: user.uid,
             email,
             username,
             adminId: 0
@@ -27,6 +27,8 @@ router.post('/register', async (req, res) => {
 
         res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
+        console.error("Error registering user:", error.message);
+        console.error("Stack trace:", error.stack);
         res.status(500).json({ error: 'Error registering user', details: error.message });
     }
 });

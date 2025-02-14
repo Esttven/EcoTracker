@@ -1,0 +1,147 @@
+/* 📌 Estilos generales del Manage */
+.manage-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    background-color: #E8F5E9;
+    padding: 20px;
+    padding-top: 60px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 📌 Título principal */
+.manage-container h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #1B5E20;
+    /* Verde oscuro */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+/* 📌 Formulario de agregar */
+.add-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-form h2 {
+    color: #2E7D32;
+    margin-bottom: 15px;
+}
+
+/* 📌 Estilizando inputs y selects */
+.add-form input,
+.add-form select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 2px solid #1B5E20;
+    background-color: #C8E6C9;
+    /* Verde claro */
+    color: #1B5E20;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 📌 Botón de agregar */
+.add-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.add-form button:hover {
+    background-color: #45a049;
+}
+
+/* 📌 Tabla de gestión */
+.manage-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 📌 Encabezados */
+.manage-table th {
+    background-color: #388E3C;
+    color: white;
+    font-size: 1.4em;
+    padding: 12px;
+    text-align: left;
+}
+
+/* 📌 Filas */
+.manage-table td {
+    font-size: 1.2em;
+    padding: 10px;
+    color: #1B5E20;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 📌 Alternar colores en filas */
+.manage-table tr:nth-child(even) {
+    background-color: #E8F5E9;
+}
+
+.manage-table tr:hover {
+    background-color: #C8E6C9;
+}
+
+/* 📌 Estilizando inputs y selects en la tabla */
+.manage-table input,
+.manage-table select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 2px solid #1B5E20;
+    background-color: #C8E6C9;
+    /* Verde claro */
+    color: #1B5E20;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 📌 Botones de acción */
+.manage-table button {
+    margin: 0 5px;
+    padding: 8px 15px;
+    font-size: 1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.manage-table button:first-child {
+    background-color: #FFC107;
+    color: black;
+}
+
+.manage-table button:last-child {
+    background-color: #F44336;
+    color: white;
+}
+
+.manage-table button:hover {
+    opacity: 0.9;
+}
