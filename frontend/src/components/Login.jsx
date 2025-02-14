@@ -19,7 +19,11 @@ const Login = () => {
         email,
         password,
       });
-      login(response.data.token, response.data.user.id);
+      login(
+        response.data.token,
+        response.data.user.id,
+        response.data.user.adminId
+      );
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
@@ -27,39 +31,43 @@ const Login = () => {
     }
   };
 
-const handleGoogleLogin = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    const token = await result.user.getIdToken();
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const token = await result.user.getIdToken();
 
-    console.log("Google sign in successful:", {
-      email: result.user.email,
-      uid: result.user.uid,
-    });
+      console.log("Google sign in successful:", {
+        email: result.user.email,
+        uid: result.user.uid,
+      });
 
-    const response = await axios.post("http://localhost:3000/google-auth", {
-      token,
-      email: result.user.email,
-      userId: result.user.uid,
-    });
+      const response = await axios.post("http://localhost:3000/google-auth", {
+        token,
+        email: result.user.email,
+        userId: result.user.uid,
+      });
 
-    if (response.data.user && response.data.token) {
-      login(response.data.token, response.data.user.id);
-      navigate("/dashboard");
-    } else {
-      throw new Error("Invalid response from server");
+      if (response.data.user && response.data.token) {
+        login(
+          response.data.token,
+          response.data.user.id,
+          response.data.user.adminId
+        );
+        navigate("/dashboard");
+      } else {
+        throw new Error("Invalid response from server");
+      }
+    } catch (error) {
+      console.error(
+        "Error registering with Google:",
+        error.response?.data || error
+      );
+      alert(
+        "Error al registrarse con Google: " +
+          (error.response?.data?.details || error.message)
+      );
     }
-  } catch (error) {
-    console.error(
-      "Error registering with Google:",
-      error.response?.data || error
-    );
-    alert(
-      "Error al registrarse con Google: " +
-        (error.response?.data?.details || error.message)
-    );
-  }
-};
+  };
 
   return (
     <div className="auth-container">
