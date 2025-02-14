@@ -4,6 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class AuditLog extends Model {
         static associate(models) {
+            // Define associations here if needed
         }
     }
     AuditLog.init({
@@ -28,6 +29,16 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         changed_at: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+        },
+        createdAt: {
+            allowNull: false,
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+        },
+        updatedAt: {
+            allowNull: false,
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
         },
