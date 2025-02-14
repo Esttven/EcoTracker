@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import "./auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,29 +26,33 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Iniciar sesión</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Correo electrónico:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Contraseña:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Iniciar sesión</button>
-      </form>
+    <div className="auth-container">
+      <div className="auth-box">
+        <h1>Iniciar sesión</h1>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Correo electrónico:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Contraseña:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          <button type="submit" className="btn-primary">
+            Iniciar sesión
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

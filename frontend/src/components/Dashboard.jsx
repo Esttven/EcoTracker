@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [totalUsage, setTotalUsage] = useState(0);
   const [carbonFootprint, setCarbonFootprint] = useState(0);
   const [consumptionRecords, setConsumptionRecords] = useState([]);
-  const { token, userId } = useAuth();
+  const { token, userId, isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (!token) return;

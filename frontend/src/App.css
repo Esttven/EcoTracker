@@ -18,27 +18,6 @@ body {
   padding: 0;
 }
 
-.navbar {
-  background-color: var(--dark-green);
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navbar a {
-  color: var(--text-light);
-  text-decoration: none;
-  font-size: 23px;
-  padding: 8px 15px;
-}
-
-.navbar a:hover {
-  background-color: var(--light-green);
-  color: var(--text-dark);
-  border-radius: 5px;
-}
-
 .home-container {
   display: flex;
   flex-direction: column;
@@ -47,6 +26,7 @@ body {
   height: 100vh;
   text-align: center;
   padding: 20px;
+  opacity: 1 !important;
 }
 
 .home-container h1 {
@@ -185,6 +165,18 @@ a:hover {
   gap: 10px;
   font-weight: bold;
   color: #333;
+}
+
+.title-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 2rem 4rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2rem;
+  transform: translateY(-20px);
+  animation: floatIn 0.8s ease-out forwards;
 }
 
 @media (max-width: 768px) {

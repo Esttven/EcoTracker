@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect, createContext, useContext } from "react";
 
 const AuthContext = createContext();
@@ -18,11 +19,22 @@ export const AuthProvider = ({ children }) => {
     setUserId(newUserId);
   };
 
-  const logout = () => {
-    setToken(null);
-    setUserId(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+  const logout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:3000/logout",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setToken(null);
+      setUserId(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
