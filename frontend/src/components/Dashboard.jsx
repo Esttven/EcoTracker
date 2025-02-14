@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [totalUsage, setTotalUsage] = useState(0);
   const [carbonFootprint, setCarbonFootprint] = useState(0);
   const [consumptionRecords, setConsumptionRecords] = useState([]);
+  const [editingId, setEditingId] = useState(null);
   const { token, userId } = useAuth();
 
   useEffect(() => {
@@ -108,7 +109,34 @@ const Dashboard = () => {
   };
 
   const handleEdit = (id) => {
-    alert(`Editar registro con ID: ${id}`);
+    setEditingId(id);
+  };
+
+  const handleSaveEdit = async (id, newUsage) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/electric-usages/${id}`,
+        { monthlyUsage: newUsage },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status === 200) {
+        const updatedRecords = consumptionRecords.map((record) =>
+          record.id === id ? { ...record, monthlyUsage: newUsage } : record
+        );
+        setConsumptionRecords(updatedRecords);
+
+        const totalUsage = updatedRecords.reduce(
+          (sum, record) => sum + record.monthlyUsage,
+          0
+        );
+        setTotalUsage(totalUsage);
+        setCarbonFootprint(totalUsage * 0.92);
+        setEditingId(null);
+      }
+    } catch (error) {
+      alert("No se pudo actualizar el registro.");
+    }
   };
 
   const handleDelete = async (id) => {
@@ -189,23 +217,27 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {consumptionRecords.length > 0 ? (
-              consumptionRecords.map((record) => (
-                <tr key={record.id}>
-                  <td>{record.applianceName}</td>
-                  <td>{record.monthlyUsage.toFixed(2)}</td>
-                  <td>{(record.monthlyUsage * 0.92).toFixed(2)}</td>
-                  <td>
-                    <button className="edit-btn" onClick={() => handleEdit(record.id)}>Editar</button>
-                    <button className="delete-btn" onClick={() => handleDelete(record.id)}>Eliminar</button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">No hay registros de consumo</td>
+            {consumptionRecords.map((record) => (
+              <tr key={record.id}>
+                <td>{record.applianceName}</td>
+                <td>
+                  {editingId === record.id ? (
+                    <input
+                      type="number"
+                      defaultValue={record.monthlyUsage}
+                      onBlur={(e) => handleSaveEdit(record.id, parseFloat(e.target.value))}
+                    />
+                  ) : (
+                    record.monthlyUsage.toFixed(2)
+                  )}
+                </td>
+                <td>{(record.monthlyUsage * 0.92).toFixed(2)}</td>
+                <td>
+                  <button className="edit-btn" onClick={() => handleEdit(record.id)}>Editar</button>
+                  <button className="delete-btn" onClick={() => handleDelete(record.id)}>Eliminar</button>
+                </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
