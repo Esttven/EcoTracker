@@ -139,3 +139,4 @@ dist
 config/config.json
 config/firebaseConfig.js
 config/serviceAccount.json
+frontend/src/config/firebaseConfigFront.js
